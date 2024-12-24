@@ -1,0 +1,38 @@
+﻿@model List<proje.Models.Randevu>
+
+<h2>Onay Bekleyen Randevular</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Çalışan</th>
+            <th>İşlem</th>
+            <th>Tarih/Saat</th>
+            <th>Durum</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var randevu in Model)
+        {
+            <tr>
+                <td>@randevu.Id</td>
+                <td>@randevu.Calisan.Ad</td>
+                <td>@randevu.Islem.Ad</td>
+                <td>@randevu.TarihSaat</td>
+                <td>@randevu.AdminOnayli</td>
+                <td>
+                    <form asp-action="RandevuOnayla" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@randevu.Id" />
+                        <button type="submit" class="btn btn-success">Onayla</button>
+                    </form>
+                    <form asp-action="RandevuReddet" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@randevu.Id" />
+                        <button type="submit" class="btn btn-danger">Reddet</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

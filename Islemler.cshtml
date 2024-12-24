@@ -1,0 +1,30 @@
+﻿@model IEnumerable<proje.Models.Islem>
+
+@{
+    ViewData["Title"] = "İşlem Listesi";
+}
+
+<h2>İşlem Listesi</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>İşlem Adı</th>
+            <th>Süre (dk)</th>
+            <th>Ücret</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var islem in Model)
+        {
+            <tr>
+                <td>@islem.Id</td>
+                <td>@islem.Ad</td>
+                <td>@islem.Sure</td>
+                <td>@islem.Ucret</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@Url.Action("Index", "Admin")" class="btn btn-secondary">Admin Paneline Dön</a>

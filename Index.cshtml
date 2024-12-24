@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<h1>Admin Paneli</h1>
+<p>Buradan çalışanları, işlemleri ve salonları yönetebilirsiniz.</p>
+
+<ul class="list-group">
+    <li class="list-group-item">
+        <a href="@Url.Action("Calisanlar", "Admin")" class="btn btn-primary">Çalışanları Yönet</a>
+        <a asp-controller="Admin" asp-action="GoToCalisan" class="btn btn-primary">
+            Çalışanlar Listesine Git
+        </a>
+    </li>
+    <li class="list-group-item">
+        <a href="@Url.Action("Islemler", "Admin")" class="btn btn-success">İşlemleri Yönet</a>
+        <a asp-controller="Admin" asp-action="GoToIslem" class="btn btn-primary">
+            İşlemler Listesine Git
+        </a>
+    </li>
+    <li class="list-group-item">
+        <a href="@Url.Action("Salonlar", "Admin")" class="btn btn-warning">Salonları Yönet</a>
+        <a asp-controller="Admin" asp-action="GoToSalon" asp-route-id="1" class="btn btn-primary">
+            Salon Detayına Git (ID: 1)
+        </a>
+    </li>
+    <li class="list-group-item">
+        <a href="@Url.Action("OnayBekleyenRandevular", "Admin")" class="btn btn-warning">Randevular</a>
+        
+    </li>
+</ul>
+
+

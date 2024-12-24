@@ -1,0 +1,28 @@
+﻿@model IEnumerable<proje.Models.Salon>
+
+@{
+    ViewData["Title"] = "Salon Listesi";
+}
+
+<h2>Salon Listesi</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Salon Adı</th>
+            <th>Çalışma Saatleri</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var salon in Model)
+        {
+            <tr>
+                <td>@salon.Id</td>
+                <td>@salon.Ad</td>
+                <td>@salon.CalismaSaatleri</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@Url.Action("Index", "Admin")" class="btn btn-secondary">Admin Paneline Dön</a>
