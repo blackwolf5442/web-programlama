@@ -1,34 +1,44 @@
-﻿
+﻿@model IEnumerable<proje.Models.Calisan>
+
 @{
-    ViewData["Title"] = "Admin Paneli";
+    ViewData["Title"] = "Çalışan Listesi";
 }
 
-<h1>Admin Paneli</h1>
-<p>Buradan çalışanları, işlemleri ve salonları yönetebilirsiniz.</p>
+<h2>Çalışan Listesi</h2>
 
-<ul class="list-group">
-    <li class="list-group-item">
-        <a href="@Url.Action("Calisanlar", "Admin")" class="btn btn-primary">Çalışanları Yönet</a>
-        <a asp-controller="Admin" asp-action="GoToCalisan" class="btn btn-primary">
-            Çalışanlar Listesine Git
-        </a>
-    </li>
-    <li class="list-group-item">
-        <a href="@Url.Action("Islemler", "Admin")" class="btn btn-success">İşlemleri Yönet</a>
-        <a asp-controller="Admin" asp-action="GoToIslem" class="btn btn-primary">
-            İşlemler Listesine Git
-        </a>
-    </li>
-    <li class="list-group-item">
-        <a href="@Url.Action("Salonlar", "Admin")" class="btn btn-warning">Salonları Yönet</a>
-        <a asp-controller="Admin" asp-action="GoToSalon" asp-route-id="1" class="btn btn-primary">
-            Salon Detayına Git (ID: 1)
-        </a>
-    </li>
-    <li class="list-group-item">
-        <a href="@Url.Action("OnayBekleyenRandevular", "Admin")" class="btn btn-warning">Randevular</a>
-        
-    </li>
-</ul>
+<!-- Yeni Çalışan Ekle Butonu -->
+<p>
+    <a class="btn btn-success" asp-action="Create">Yeni Çalışan Ekle</a>
+</p>
 
+<!-- Çalışanları Listeleme Tablosu -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ad</th>
+            <th>Uzmanlık Alanları</th>
+            <th>Çalışma Saati</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Ad</td>
+                <td>@string.Join(", ", item.Uzmanliklar)</td>
+                <td>@item.UygunlukSaatleri</td>
+                <td>
+                    <!-- Düzenle Butonu -->
+                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>
+
+                    <!-- Sil Butonu -->
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
