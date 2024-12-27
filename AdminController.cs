@@ -1,85 +1,4 @@
-﻿/*namespace proje.Controllers
-{
-    using Microsoft.AspNetCore.Mvc;
-    using proje.Models;
-    using System.Linq;
 
-    public class AdminController : Controller
-    {
-        private readonly KuaforDbContext _context;
-
-        public AdminController(KuaforDbContext context)
-        {
-            _context = context;
-        }
-
-        // GET: /Admin/
-        public IActionResult Index()
-        {
-            ViewBag.SalonSayisi = _context.Salonlar.Count();
-            ViewBag.CalisanSayisi = _context.Calisanlar.Count();
-            ViewBag.IslemSayisi = _context.Islemler.Count();
-            ViewBag.RandevuSayisi = _context.Randevular.Count();
-
-            return View();
-        }
-
-        // GET: /Admin/Salonlar
-        public IActionResult Salonlar()
-        {
-            var salonlar = _context.Salonlar.ToList();
-            return View(salonlar);
-        }
-
-        // GET: /Admin/Calisanlar
-        public IActionResult Calisanlar()
-        {
-            var calisanlar = _context.Calisanlar.ToList();
-            return View(calisanlar);
-        }
-
-        // GET: /Admin/Islemler
-        public IActionResult Islemler()
-        {
-            var islemler = _context.Islemler.ToList();
-            return View(islemler);
-        }
-
-        // GET: /Admin/Randevular
-        public IActionResult Randevular()
-        {
-            var randevular = _context.Randevular.ToList();
-            return View(randevular);
-        }
-
-        // Admin Giriş Sayfası
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Login(string username, string password)
-        {
-            if (username == "B221210404@sakarya.edu.tr" && password == "sau")
-            {
-                TempData["AdminGiris"] = "true";
-                return RedirectToAction("Index");
-            }
-            ViewBag.Hata = "Kullanıcı adı veya şifre hatalı!";
-            return View();
-        }
-
-        // Admin Çıkış
-        public IActionResult Logout()
-        {
-            TempData.Remove("AdminGiris");
-            return RedirectToAction("Login");
-        }
-    }
-
-}*/
 using Newtonsoft.Json;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
@@ -122,6 +41,11 @@ namespace proje.Controllers
 
             return View();
         }
+        public IActionResult Üyeler()
+        {
+            var kullanicilar = _context.Üyeler.ToList();
+            return View(kullanicilar);
+        }
 
         // Çalışanları Listele
         public IActionResult Calisanlar()
@@ -144,7 +68,67 @@ namespace proje.Controllers
             return View(salonlar);
         }
 
-        
+        public IActionResult OnayBekleyenRandevular()
+        {
+            // Onay bekleyen randevuları getir
+            var bekleyenRandevular = _context.Randevular
+                .Include(r => r.Calisan)
+                .Include(r => r.Islem)
+                .Where(r => !r.Onaylandi && r.AdminOnayli == "Beklemede")
+                .ToList();
+
+            return View(bekleyenRandevular);
+        }
+
+        [HttpPost]
+        public IActionResult RandevuOnayla(int id)
+        {
+            try
+            {
+                var randevu = _context.Randevular.Find(id);
+                if (randevu == null)
+                    return NotFound("Randevu bulunamadı.");
+
+                randevu.Onaylandi = true;
+                //randevu.AdminOnayli = "Onaylandı";
+                _context.Randevular.Update(randevu);
+                _context.SaveChanges();
+
+                return RedirectToAction("OnayBekleyenRandevular");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Randevu onaylanırken bir hata oluştu: " + ex.Message;
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult RandevuReddet(int id)
+        {
+            try
+            {
+                var randevu = _context.Randevular.Find(id);
+                if (randevu == null)
+                    return NotFound("Randevu bulunamadı.");
+
+                randevu.AdminOnayli = "Reddedildi";
+                _context.Randevular.Update(randevu);
+                _context.SaveChanges();
+
+                return RedirectToAction("OnayBekleyenRandevular");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Randevu reddedilirken bir hata oluştu: " + ex.Message;
+                return View("Error");
+            }
+        }
+
+
+
+
+
     }
 }
 
