@@ -15,13 +15,42 @@ namespace proje.Controllers
             _context = context;
         }
 
-        // Ana Sayfa: Login ve Randevu Al Seçenekleri
+        public IActionResult KayitOl()
+        {
+            return View();
+        }
+
+        
+        [HttpPost]
+        public IActionResult KayitOl(UyeOl model)
+        {
+            if (ModelState.IsValid)
+            {
+                // VeritabanÄ±na kaydetme iÅŸlemi
+                _context.Ãœyeler.Add(model);
+                _context.SaveChanges();
+
+                // BaÅŸarÄ± mesajÄ±nÄ± ViewBag'e ata
+                ViewBag.SuccessMessage = "KayÄ±t iÅŸleminiz baÅŸarÄ±yla tamamlanmÄ±ÅŸtÄ±r.";
+                return View();
+            }
+
+            return View(model);
+        }
+        
+        public IActionResult Ãœyeler()
+        {
+            return RedirectToAction("Ãœyeler","Admin");
+        }
+
+
+        // Ana Sayfa: Login ve Randevu Al SeÃ§enekleri
         public IActionResult Index()
         {
             return View();
         }
 
-        // Admin Login Sayfası
+        // Admin Login SayfasÄ±
         public IActionResult Login()
         {
             return View();
@@ -31,31 +60,31 @@ namespace proje.Controllers
         [HttpPost]
         public IActionResult Login(string username, int password)
         {
-            // Kullanıcı adı ve şifre doğrulaması
+            // KullanÄ±cÄ± adÄ± ve ÅŸifre doÄŸrulamasÄ±
             if ((username == "B221210404@sakarya.edu.tr" || username == "b221210404@sakarya.edu.tr") && password == 1)
             {
-                // Admin oturumunu başlat
+                // Admin oturumunu baÅŸlat
                 HttpContext.Session.SetString("Admin", "true");
                 return RedirectToAction("Index", "Admin");
             }
 
-            // Hatalı giriş durumu
-            ViewBag.Error = "Hatalı kullanıcı adı veya şifre!";
+            // HatalÄ± giriÅŸ durumu
+            ViewBag.Error = "HatalÄ± kullanÄ±cÄ± adÄ± veya ÅŸifre!";
             return View();
         }
 
-        // Randevu Al Sayfası
+        // Randevu Al SayfasÄ±
         public IActionResult Randevu()
         {
             return RedirectToAction("RandevuOlustur");
         }
 
-        // Randevuların Listesi
+        // RandevularÄ±n Listesi
         public IActionResult Randevular()
         {
             try
             {
-                // Tüm randevuları çalışan ve işlem bilgileri ile birlikte getir
+                // TÃ¼m randevularÄ± Ã§alÄ±ÅŸan ve iÅŸlem bilgileri ile birlikte getir
                 var randevular = _context.Randevular
                     .Include(r => r.Calisan)
                     .Include(r => r.Islem)
@@ -66,19 +95,19 @@ namespace proje.Controllers
             }
             catch (Exception ex)
             {
-                // Hata durumunda kullanıcıya bilgi ver
-                ViewBag.Error = "Randevular yüklenirken bir hata oluştu: " + ex.Message;
+                // Hata durumunda kullanÄ±cÄ±ya bilgi ver
+                ViewBag.Error = "Randevular yÃ¼klenirken bir hata oluÅŸtu: " + ex.Message;
                 return View("Error");
             }
             
         }
 
-        // GET: Randevu Oluşturma Sayfası
+        // GET: Randevu OluÅŸturma SayfasÄ±
         public IActionResult RandevuOlustur()
         {
             try
             {
-                // Çalışanlar ve işlemleri ViewBag ile doldur
+                // Ã‡alÄ±ÅŸanlar ve iÅŸlemleri ViewBag ile doldur
                 ViewBag.Calisanlar = _context.Calisanlar.Select(c => new { c.Id, c.Ad }).ToList();
                 ViewBag.Islemler = _context.Islemler.Select(i => new { i.Id, i.Ad }).ToList();
                 
@@ -87,8 +116,8 @@ namespace proje.Controllers
             }
             catch (Exception ex)
             {
-                // Hata durumunda kullanıcıya bilgi ver
-                ViewBag.Error = "Randevu oluşturma sayfası yüklenirken bir hata oluştu: " + ex.Message;
+                // Hata durumunda kullanÄ±cÄ±ya bilgi ver
+                ViewBag.Error = "Randevu oluÅŸturma sayfasÄ± yÃ¼klenirken bir hata oluÅŸtu: " + ex.Message;
                 return View("Error");
             }
         }
@@ -101,7 +130,7 @@ namespace proje.Controllers
                 var randevu = _context.Randevular.Find(id);
                 if (randevu == null)
                 {
-                    return NotFound("Randevu bulunamadı.");
+                    return NotFound("Randevu bulunamadÄ±.");
                 }
 
                 // Randevuyu onayla
@@ -109,17 +138,17 @@ namespace proje.Controllers
                 _context.Randevular.Update(randevu);
                 _context.SaveChanges();
 
-                return RedirectToAction("Randevular"); // Listeye geri dön
+                return RedirectToAction("Randevular"); // Listeye geri dÃ¶n
             }
             catch (Exception ex)
             {
-                ViewBag.Error = "Randevu onaylanırken bir hata oluştu: " + ex.Message;
+                ViewBag.Error = "Randevu onaylanÄ±rken bir hata oluÅŸtu: " + ex.Message;
                 return View("Error");
             }
         }
 
 
-        // POST: Yeni Randevu Oluşturma
+        // POST: Yeni Randevu OluÅŸturma
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RandevuOlustur(Randevu yeniRandevu)
@@ -131,22 +160,22 @@ namespace proje.Controllers
             {
                 var calisan = _context.Calisanlar.Find(yeniRandevu.CalisanId);
                 if (calisan == null)
-                    return NotFound("Çalışan bulunamadı.");
+                    return NotFound("Ã‡alÄ±ÅŸan bulunamadÄ±.");
 
                 var islem = _context.Islemler.Find(yeniRandevu.IslemId);
                 if (islem == null)
-                    return NotFound("İşlem bulunamadı.");
+                    return NotFound("Ä°ÅŸlem bulunamadÄ±.");
                 
                
 
-                // Randevu çakışma kontrolü
+                // Randevu Ã§akÄ±ÅŸma kontrolÃ¼
                 var cakisma = _context.Randevular.Any(r =>
                     r.CalisanId == yeniRandevu.CalisanId &&
                     r.TarihSaat < yeniRandevu.TarihSaat.AddMinutes(islem.Sure) &&
                     r.TarihSaat.AddMinutes(islem.Sure) > yeniRandevu.TarihSaat);
 
                 if (cakisma)
-                    return BadRequest("Bu tarih ve saat için çalışan müsait değil.");
+                    return BadRequest("Bu tarih ve saat iÃ§in Ã§alÄ±ÅŸan mÃ¼sait deÄŸil.");
 
                 // Yeni randevuyu ekle ve kaydet
                 _context.Randevular.Add(yeniRandevu);
@@ -156,8 +185,8 @@ namespace proje.Controllers
             }
             catch (Exception ex)
             {
-                // Hata durumunda kullanıcıya bilgi ver
-                ViewBag.Error = "Randevu kaydedilirken bir hata oluştu: " + ex.Message;
+                // Hata durumunda kullanÄ±cÄ±ya bilgi ver
+                ViewBag.Error = "Randevu kaydedilirken bir hata oluÅŸtu: " + ex.Message;
                 return View("Error");
             }
         }
