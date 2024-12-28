@@ -1,126 +1,149 @@
-﻿@{
-    ViewData["Title"] = "Admin Paneli";
+﻿@model IEnumerable<proje.Models.Salon>
+
+@{
+    ViewData["Title"] = "Salon Listesi";
 }
 
 <div class="container mt-5">
-    <!-- Başlık -->
+    <!-- Başlık ve Yeni Salon Ekle Butonu -->
     <div class="text-center mb-4">
-        <h1 class="display-5 text-primary">Yönetim Paneli</h1>
-        <p class="text-muted">Çalışanları, işlemleri ve salonları kolayca yönetin.</p>
+        <h2 class="display-4 text-primary font-weight-bold">Salon Listesi</h2>
+        <p class="lead text-muted">Salonların detaylı bir listesi. Yeni salon ekleyebilir veya mevcut salonları düzenleyebilirsiniz.</p>
+        <a class="btn btn-lg btn-success" asp-action="Create" style="border-radius: 30px;">
+            <i class="fas fa-plus-circle"></i> Yeni Salon Ekle
+        </a>
     </div>
 
-    <!-- Yönetim Seçenekleri -->
-    <div class="card shadow-lg p-4">
-        <h3 class="card-title mb-4">Yönetim Alanları</h3>
-        <div class="list-group">
-            <!-- Çalışanları Yönet -->
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <h5>Çalışan Yönetimi</h5>
-                    <p class="text-muted mb-1">Çalışanları ekleyin, düzenleyin ve yönetin.</p>
-                </div>
-                <div>
-                    <a href="@Url.Action("Calisanlar", "Admin")" class="btn btn-primary me-2">
-                        <i class="bi bi-people"></i> Listeye Git
-                    </a>
-                    <a href="@Url.Action("GoToCalisan", "Admin")" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-right-circle"></i> Çalışanları Yönet
-                    </a>
-                </div>
-            </div>
+    <!-- Salonları Listeleme Tablosu -->
+    <div class="table-responsive shadow-lg rounded-lg">
+        <table class="table table-bordered table-striped table-hover text-center align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID</th>
+                    <th>Salon Adı</th>
+                    <th>Çalışma Saatleri</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var salon in Model)
+                {
+                    <tr>
+                        <td>@salon.Id</td>
+                        <td>@salon.Ad</td>
+                        <td>@salon.CalismaSaatleri</td>
+                        <td>
+                            <!-- Düzenle Butonu -->
+                            <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@salon.Id" style="border-radius: 20px;">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </a>
 
-            <!-- İşlemleri Yönet -->
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <h5>İşlem Yönetimi</h5>
-                    <p class="text-muted mb-1">Kuaför işlemlerini ekleyin ve yönetin.</p>
-                </div>
-                <div>
-                    <a href="@Url.Action("Islemler", "Admin")" class="btn btn-success me-2">
-                        <i class="bi bi-scissors"></i> Listeye Git
-                    </a>
-                    <a href="@Url.Action("GoToIslem", "Admin")" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-right-circle"></i> İşlemleri Yönet
-                    </a>
-                </div>
-            </div>
-
-            <!-- Salonları Yönet -->
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <h5>Salon Yönetimi</h5>
-                    <p class="text-muted mb-1">Salonları ekleyin, düzenleyin ve yönetin.</p>
-                </div>
-                <div>
-                    <a href="@Url.Action("Salonlar", "Admin")" class="btn btn-warning me-2">
-                        <i class="bi bi-house-door"></i> Listeye Git
-                    </a>
-                    <a href="@Url.Action("GoToSalon", "Admin", new { id = 1 })" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-right-circle"></i> Salonları Yönet
-                    </a>
-                </div>
-            </div>
-
-            <!-- Randevuları Yönet -->
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <h5>Randevu Yönetimi</h5>
-                    <p class="text-muted mb-1">Randevuları inceleyin ve onaylayın.</p>
-                </div>
-                <div>
-                    <a href="@Url.Action("OnayBekleyenRandevular", "Admin")" class="btn btn-info me-2">
-                        <i class="bi bi-calendar-check"></i> Randevular
-                    </a>
-                </div>
-            </div>
-
-            <!-- Üyeler -->
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <h5>Üyeler Yönetimi</h5>
-                    <p class="text-muted mb-1">Üyelere ait bilgiler burada bulunmaktadır.</p>
-                </div>
-                <div>
-                    <a href="@Url.Action("Üyeler", "Admin")" class="btn btn-info me-2">
-                        <i class="bi bi-calendar-check"></i> Üyeler
-                    </a>
-                </div>
-            </div>
-        </div>
+                            <!-- Sil Butonu -->
+                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@salon.Id" onclick="return confirm('Bu salonu silmek istediğinizden emin misiniz?');" style="border-radius: 20px;">
+                                <i class="fas fa-trash-alt"></i> Sil
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
+</div>
+<div class="d-flex justify-content-center mt-4">
+    <a href="@Url.Action("Index", "Admin")" class="btn btn-outline-dark btn-lg px-4 py-2">Admin Paneline Dön</a>
 </div>
 
 <!-- Ek Stiller -->
 <style>
     body {
-        background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+        background: #f3f4f6;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    h1 {
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    h2 {
         font-weight: 700;
+        color: #007bff;
+        font-size: 2.5rem;
     }
 
-    .btn {
-        border-radius: 5px;
-        font-size: 1rem;
-        transition: transform 0.2s, box-shadow 0.2s;
+    p {
+        font-size: 1.2rem;
+        color: #6c757d;
     }
 
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    .table {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+        .table th, .table td {
+            padding: 1.2rem;
+            font-size: 1rem;
         }
 
-    .list-group-item {
-        border: none;
-        padding: 1.5rem 1rem;
-        background-color: #ffffff;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 1rem;
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
     }
 
-        .list-group-item:hover {
-            background-color: #f8f9fa;
+    .table-bordered {
+        border: 1px solid #ddd;
+    }
+
+    .table-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-lg {
+        font-size: 1.1rem;
+        padding: 0.8rem 2rem;
+        border-radius: 30px;
+    }
+
+    .btn-sm {
+        font-size: 0.9rem;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        color: white;
+    }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            color: white;
         }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            color: white;
+        }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            color: white;
+        }
+
+    .table-responsive {
+        margin-top: 30px;
+    }
 </style>

@@ -1,0 +1,107 @@
+﻿@model proje.Models.Randevu
+
+@{
+    ViewData["Title"] = "Yeni Randevu Oluştur";
+}
+
+<div class="container mt-5">
+    <!-- Başlık -->
+    <div class="text-center mb-4">
+        <h2 class="text-primary">Yeni Randevu Oluştur</h2>
+        <p class="text-muted">Lütfen randevu bilgilerini eksiksiz doldurun.</p>
+    </div>
+
+    <!-- Form -->
+    <div class="card shadow-lg p-4">
+        <form asp-action="RandevuOlustur" method="post">
+            <!-- Müşteri Bilgileri -->
+            <h4 class="mb-3 text-secondary">Müşteri Bilgileri</h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="MusteriAd" class="form-label">Ad</label>
+                    <input type="text" id="MusteriAd" name="MusteriAd" class="form-control" placeholder="Müşteri adını girin" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="MusteriSoyad" class="form-label">Soyad</label>
+                    <input type="text" id="MusteriSoyad" name="MusteriSoyad" class="form-control" placeholder="Müşteri soyadını girin" required />
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="MusteriEmail" class="form-label">Email</label>
+                    <input type="email" id="MusteriEmail" name="MusteriEmail" class="form-control" placeholder="Müşteri email adresini girin" required />
+                </div>
+            </div>
+
+            <!-- Randevu Bilgileri -->
+            <h4 class="mb-3 text-secondary">Randevu Bilgileri</h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="CalisanId" class="form-label">Çalışan</label>
+                    <select id="CalisanId" name="CalisanId" class="form-control">
+                        <option value="">Çalışan Seçiniz</option>
+                        @foreach (var calisan in ViewBag.Calisanlar)
+                        {
+                            <option value="@calisan.Id">@calisan.Ad</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="IslemId" class="form-label">İşlem</label>
+                    <select id="IslemId" name="IslemId" class="form-control">
+                        <option value="">İşlem Seçiniz</option>
+                        @foreach (var islem in ViewBag.Islemler)
+                        {
+                            <option value="@islem.Id">@islem.Ad</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="TarihSaat" class="form-label">Tarih ve Saat</label>
+                    <input type="datetime-local" id="TarihSaat" name="TarihSaat" class="form-control" />
+                </div>
+            </div>
+
+            <!-- Submit Butonu -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-calendar-check"></i> Randevu Oluştur
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Ek Stiller -->
+<style>
+    body {
+        background: linear-gradient(to bottom, #f0f8ff, #e6e6fa);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h2 {
+        font-weight: 700;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        transition: box-shadow 0.3s;
+    }
+
+        .form-control:focus {
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+            border-color: #007bff;
+        }
+
+    .btn {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+    }
+</style>

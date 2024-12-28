@@ -1,10 +1,10 @@
-﻿@model IEnumerable<proje.Models.Calisan>
+﻿@model IEnumerable<proje.Models.Salon>
 
 @{
     ViewData["Title"] = "List";
 }
 
-<h1>List</h1>
+<h1>Lİst</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -16,13 +16,7 @@
                 @Html.DisplayNameFor(model => model.Ad)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Uzmanliklar)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UygunlukSaatleri)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Salon)
+                @Html.DisplayNameFor(model => model.CalismaSaatleri)
             </th>
             <th></th>
         </tr>
@@ -34,13 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Ad)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Uzmanliklar)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UygunlukSaatleri)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Salon.Id)
+                @Html.DisplayFor(modelItem => item.CalismaSaatleri)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
