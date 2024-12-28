@@ -47,6 +47,52 @@ namespace proje.Controllers
             return View(kullanicilar);
         }
 
+        public IActionResult UyeSil(int id)
+        {
+            try
+            {
+                // Silinecek üyeyi bul
+                var uye = _context.Üyeler.Find(id);
+                if (uye == null)
+                {
+                    return NotFound("Üye bulunamadı.");
+                }
+
+                return View(uye);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Üye bilgileri yüklenirken bir hata oluştu: " + ex.Message;
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UyeSilOnayla(int id)
+        {
+            try
+            {
+                var uye = _context.Üyeler.Find(id);
+                if (uye == null)
+                {
+                    TempData["ErrorMessage"] = "Üye bulunamadı.";
+                    return RedirectToAction("Üyeler");
+                }
+
+                _context.Üyeler.Remove(uye);
+                _context.SaveChanges();
+
+                TempData["SuccessMessage"] = "Üye başarıyla silindi.";
+                return RedirectToAction("Üyeler");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Üye silinirken bir hata oluştu: " + ex.Message;
+                return RedirectToAction("Üyeler");
+            }
+        }
+
         // Çalışanları Listele
         public IActionResult Calisanlar()
         {
