@@ -1,0 +1,52 @@
+﻿@model proje.Models.UyeOl
+
+@{
+    ViewData["Title"] = "Üye Sil";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-danger text-white text-center">
+            <h2>Üye Sil</h2>
+        </div>
+        <div class="card-body">
+            <p class="text-center text-muted">Bu üyeyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</p>
+
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <strong>Kullanıcı Adı:</strong> @Model.KullaniciAdi
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Email:</strong> @Model.Email
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Ad Soyad:</strong> @Model.AdSoyad
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Doğum Tarihi:</strong> @Model.DogumTarihi.ToShortDateString()
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Cinsiyet:</strong> @Model.Cinsiyet
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Telefon:</strong> @Model.Telefon
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <form asp-action="UyeSilOnayla" method="post" class="d-inline">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-danger btn-lg px-4 me-2">
+                    <i class="bi bi-trash"></i> Evet, Sil
+                </button>
+            </form>
+            <a asp-action="Üyeler" class="btn btn-secondary btn-lg px-4">
+                <i class="bi bi-arrow-left"></i> Hayır, Geri Dön
+            </a>
+        </div>
+    </div>
+</div>

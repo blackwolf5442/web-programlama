@@ -1,0 +1,162 @@
+﻿@model IEnumerable<proje.Models.UyeOl>
+
+@{
+    ViewData["Title"] = "Kayıtlı Üyeler";
+}
+
+<!-- Container -->
+<div class="container mt-5">
+    <!-- Card Design -->
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-success text-white">
+            <h2 class="text-center">Kayıtlı Üyeler</h2>
+        </div>
+        <div class="card-body">
+            <!-- Başarı veya Hata Mesajları -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <!-- DataTables Table -->
+            <table id="userTable" class="table table-striped table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Kullanıcı Adı</th>
+                        <th>Email</th>
+                        <th>Şifre</th>
+                        <th>Ad Soyad</th>
+                        <th>Doğum Tarihi</th>
+                        <th>Cinsiyet</th>
+                        <th>Telefon</th>
+                        <th class="text-center">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var kullanici in Model)
+                    {
+                        <tr>
+                            <td>@kullanici.KullaniciAdi</td>
+                            <td>@kullanici.Email</td>
+                            <td>@kullanici.Sifre</td>
+                            <td>@kullanici.AdSoyad</td>
+                            <td>@kullanici.DogumTarihi.ToShortDateString()</td>
+                            <td>@kullanici.Cinsiyet</td>
+                            <td>@kullanici.Telefon</td>
+                            <td class="text-center">
+                                <!-- Silme Butonu -->
+                                <a asp-action="UyeSil" asp-route-id="@kullanici.Id" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i> Sil
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- DataTables Script -->
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#userTable').DataTable({
+                "paging": true,      // Sayfalama
+                "searching": true,   // Arama
+                "ordering": true,    // Sıralama
+                "info": true,        // Bilgi
+                "lengthChange": true, // Sayfa başına gösterilen öğe sayısı
+                "language": {
+                    "lengthMenu": "Gösterilen öğe sayısı: _MENU_",
+                    "zeroRecords": "Eşleşen sonuç bulunamadı",
+                    "info": "Toplam _TOTAL_ öğeden _START_ ile _END_ arasındakiler",
+                    "infoEmpty": "Gösterilecek veri yok",
+                    "infoFiltered": "(Toplam _MAX_ öğeden filtrelendi)",
+                    "search": "Ara:"
+                },
+                // Görsel düzenlemeler
+                "dom": '<"top"f>rt<"bottom"lp><"clear">',  // Search Box ve Sayfalama düzenini özelleştirir
+                "order": [[0, 'asc']], // Varsayılan sıralama: İlk sütun
+                "pagingType": "full_numbers",  // Sayfalama tipi: "first", "last", "next", "prev"
+                "pageLength": 10, // Başlangıçta 10 öğe gösterilsin
+                "lengthMenu": [10, 25, 50, 100],  // Kullanıcının görebileceği öğe sayıları
+            });
+        });
+    </script>
+}
+<style>
+    /* DataTable stilini özelleştirme */
+    #userTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        /* Tablo başlıkları */
+        #userTable thead {
+            background-color: #007BFF;
+            color: white;
+        }
+
+            #userTable thead th {
+                padding: 10px;
+                font-weight: bold;
+            }
+
+        /* Tablo satırları */
+        #userTable tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+            /* Satır üzerine gelindiğinde renk değişimi */
+            #userTable tbody tr:hover {
+                background-color: #f1f1f1;
+            }
+
+    /* DataTable Arama ve Sayfalama kutuları */
+    .dataTables_filter input {
+        border-radius: 5px;
+        padding: 8px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .dataTables_length select {
+        border-radius: 5px;
+        padding: 8px;
+        border: 1px solid #ccc;
+    }
+
+    /* Sayfalama butonları */
+    .dataTables_paginate .paginate_button {
+        background-color: #28a745;
+        color: white;
+        border: 1px solid #28a745;
+        padding: 6px 12px;
+        border-radius: 5px;
+        margin: 0 2px;
+    }
+
+        .dataTables_paginate .paginate_button:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+
+        .dataTables_paginate .paginate_button.current {
+            background-color: #007BFF;
+            border-color: #007BFF;
+        }
+</style>
+

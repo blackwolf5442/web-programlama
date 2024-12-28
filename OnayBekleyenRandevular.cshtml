@@ -1,38 +1,159 @@
 ﻿@model List<proje.Models.Randevu>
 
-<h2>Onay Bekleyen Randevular</h2>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h2 class="display-4 text-primary font-weight-bold">Onay Bekleyen Randevular</h2>
+        <p class="lead text-muted">Tüm onay bekleyen randevuların detaylı listesi.</p>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Çalışan</th>
-            <th>İşlem</th>
-            <th>Tarih/Saat</th>
-            <th>Durum</th>
-            <th>İşlemler</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var randevu in Model)
-        {
-            <tr>
-                <td>@randevu.Id</td>
-                <td>@randevu.Calisan.Ad</td>
-                <td>@randevu.Islem.Ad</td>
-                <td>@randevu.TarihSaat</td>
-                <td>@randevu.AdminOnayli</td>
-                <td>
-                    <form asp-action="RandevuOnayla" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="@randevu.Id" />
-                        <button type="submit" class="btn btn-success">Onayla</button>
-                    </form>
-                    <form asp-action="RandevuReddet" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="@randevu.Id" />
-                        <button type="submit" class="btn btn-danger">Reddet</button>
-                    </form>
-                </td>
-            </tr>
+    <div class="table-responsive shadow-lg rounded-lg overflow-hidden">
+        <table class="table table-bordered table-hover table-striped align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Müşteri Adı</th>
+                    <th>Müşteri Soyadı</th>
+                    <th>Email</th>
+                    <th>Çalışan</th>
+                    <th>İşlem</th>
+                    <th>Tarih/Saat</th>
+                    <th>Durum</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var randevu in Model)
+                {
+                    <tr>
+                        <td>@randevu.Id</td>
+                        <td>@randevu.MusteriAd</td>
+                        <td>@randevu.MusteriSoyad</td>
+                        <td>@randevu.MusteriEmail</td>
+                        <td>@randevu.Calisan.Ad</td>
+                        <td>@randevu.Islem.Ad</td>
+                        <td>@randevu.TarihSaat.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            @if (randevu.AdminOnayli == "Onaylı")
+                            {
+                                <span class="badge bg-gradient-success text-white">Onaylı</span>
+                            }
+                            else if (randevu.AdminOnayli == "Bekliyor")
+                            {
+                                <span class="badge bg-gradient-warning text-white">Bekliyor</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-gradient-info text-white">Bilinmiyor</span>
+                            }
+                        </td>
+                        <td>
+                            <form asp-action="RandevuOnayla" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@randevu.Id" />
+                                <button type="submit" class="btn btn-outline-info btn-sm">Onayla</button>
+                            </form>
+                            <form asp-action="RandevuReddet" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@randevu.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Reddet</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Ek Stiller -->
+<style>
+    body {
+        background: #e9f7fa;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    h2 {
+        font-weight: 700;
+        color: #007bff;
+    }
+
+    p {
+        font-size: 1.1rem;
+        color: #6c757d;
+    }
+
+    .table {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+        .table th, .table td {
+            padding: 1.2rem;
         }
-    </tbody>
-</table>
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+
+    .badge {
+        font-size: 1rem;
+        padding: 0.6rem 1.4rem;
+        border-radius: 30px;
+    }
+
+    /* Renkli Badge'ler */
+    .bg-gradient-success {
+        background: linear-gradient(145deg, #28a745, #218838);
+    }
+
+    .bg-gradient-warning {
+        background: linear-gradient(145deg, #ffc107, #e0a800);
+    }
+
+    .bg-gradient-info {
+        background: linear-gradient(145deg, #17a2b8, #138496);
+    }
+
+    .btn-outline-info {
+        color: #17a2b8;
+        border-color: #17a2b8;
+    }
+
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-outline-info:hover {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .table-bordered {
+        border: 1px solid #ddd;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: white;
+        text-align: center;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    .table-responsive {
+        margin-top: 30px;
+    }
+</style>

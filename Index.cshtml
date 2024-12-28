@@ -1,44 +1,126 @@
-﻿@model IEnumerable<proje.Models.Calisan>
-
-@{
-    ViewData["Title"] = "Çalışan Listesi";
+﻿@{
+    ViewData["Title"] = "Admin Paneli";
 }
 
-<h2>Çalışan Listesi</h2>
+<div class="container mt-5">
+    <!-- Başlık -->
+    <div class="text-center mb-4">
+        <h1 class="display-5 text-primary">Yönetim Paneli</h1>
+        <p class="text-muted">Çalışanları, işlemleri ve salonları kolayca yönetin.</p>
+    </div>
 
-<!-- Yeni Çalışan Ekle Butonu -->
-<p>
-    <a class="btn btn-success" asp-action="Create">Yeni Çalışan Ekle</a>
-</p>
+    <!-- Yönetim Seçenekleri -->
+    <div class="card shadow-lg p-4">
+        <h3 class="card-title mb-4">Yönetim Alanları</h3>
+        <div class="list-group">
+            <!-- Çalışanları Yönet -->
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>Çalışan Yönetimi</h5>
+                    <p class="text-muted mb-1">Çalışanları ekleyin, düzenleyin ve yönetin.</p>
+                </div>
+                <div>
+                    <a href="@Url.Action("Calisanlar", "Admin")" class="btn btn-primary me-2">
+                        <i class="bi bi-people"></i> Listeye Git
+                    </a>
+                    <a href="@Url.Action("GoToCalisan", "Admin")" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-right-circle"></i> Çalışanları Yönet
+                    </a>
+                </div>
+            </div>
 
-<!-- Çalışanları Listeleme Tablosu -->
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Ad</th>
-            <th>Uzmanlık Alanları</th>
-            <th>Çalışma Saati</th>
-            <th>İşlemler</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Ad</td>
-                <td>@string.Join(", ", item.Uzmanliklar)</td>
-                <td>@item.UygunlukSaatleri</td>
-                <td>
-                    <!-- Düzenle Butonu -->
-                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>
+            <!-- İşlemleri Yönet -->
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>İşlem Yönetimi</h5>
+                    <p class="text-muted mb-1">Kuaför işlemlerini ekleyin ve yönetin.</p>
+                </div>
+                <div>
+                    <a href="@Url.Action("Islemler", "Admin")" class="btn btn-success me-2">
+                        <i class="bi bi-scissors"></i> Listeye Git
+                    </a>
+                    <a href="@Url.Action("GoToIslem", "Admin")" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-right-circle"></i> İşlemleri Yönet
+                    </a>
+                </div>
+            </div>
 
-                    <!-- Sil Butonu -->
-                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Sil</a>
-                </td>
-            </tr>
+            <!-- Salonları Yönet -->
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>Salon Yönetimi</h5>
+                    <p class="text-muted mb-1">Salonları ekleyin, düzenleyin ve yönetin.</p>
+                </div>
+                <div>
+                    <a href="@Url.Action("Salonlar", "Admin")" class="btn btn-warning me-2">
+                        <i class="bi bi-house-door"></i> Listeye Git
+                    </a>
+                    <a href="@Url.Action("GoToSalon", "Admin", new { id = 1 })" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-right-circle"></i> Salonları Yönet
+                    </a>
+                </div>
+            </div>
+
+            <!-- Randevuları Yönet -->
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>Randevu Yönetimi</h5>
+                    <p class="text-muted mb-1">Randevuları inceleyin ve onaylayın.</p>
+                </div>
+                <div>
+                    <a href="@Url.Action("OnayBekleyenRandevular", "Admin")" class="btn btn-info me-2">
+                        <i class="bi bi-calendar-check"></i> Randevular
+                    </a>
+                </div>
+            </div>
+
+            <!-- Üyeler -->
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>Üyeler Yönetimi</h5>
+                    <p class="text-muted mb-1">Üyelere ait bilgiler burada bulunmaktadır.</p>
+                </div>
+                <div>
+                    <a href="@Url.Action("Üyeler", "Admin")" class="btn btn-info me-2">
+                        <i class="bi bi-calendar-check"></i> Üyeler
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ek Stiller -->
+<style>
+    body {
+        background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        font-weight: 700;
+    }
+
+    .btn {
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-    </tbody>
-</table>
 
+    .list-group-item {
+        border: none;
+        padding: 1.5rem 1rem;
+        background-color: #ffffff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1rem;
+    }
+
+        .list-group-item:hover {
+            background-color: #f8f9fa;
+        }
+</style>
